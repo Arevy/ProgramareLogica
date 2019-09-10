@@ -1,0 +1,1 @@
+Exercitii simple in Prolog
