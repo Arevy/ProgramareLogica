@@ -1,0 +1,9 @@
+%a)
+
+all_a([a]).
+all_a([a|Tail]) :- all_a(Tail).
+
+%b)
+
+list_length([],0).
+list_length([_|Tail],Result) :- list_length(Tail, Result1), Result is Result1 + 1.

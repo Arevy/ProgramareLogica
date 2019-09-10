@@ -1,0 +1,21 @@
+fmod MYNINT is
+  sort Int .
+  op 0 : -> Int .
+  op s_ : Int -> Int .
+  op p_ : Int -> Int .
+  op _+_ : Int Int -> Int [assoc comm prec 33] .
+  op _-_ : Int Int -> Int [assoc prec 33].
+  op _*_ : Int Int -> Int [assoc comm prec 32].
+  vars N M : Int .
+  eq 0 + N = N .
+  eq s(N) + M = s(N + M) .
+  eq N - 0 = N .
+  eq N - s(M) = p(N - M) .
+  eq 0 * M = 0 .
+  eq s(N) * M = (N * M) + M .
+  eq s(p(N)) = N .
+  eq p(s(N)) = N .
+endfm
+
+
+red (s(s(s(0))) - s(0)) * s(s(s(0))) + s(s(s(s(0)))) - (s(s(s(0))) + s(s(0)) * s(s(s(0))))

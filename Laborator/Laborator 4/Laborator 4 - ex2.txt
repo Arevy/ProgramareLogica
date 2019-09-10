@@ -1,0 +1,40 @@
+%a)
+
+scalarMult(_,[],[]).
+scalarMult(X,[InputHead|InputTail],[OutputHead|OutputTail]) :-
+              scalarMult(X,InputTail,OutputTail),
+    		  OutputHead is X * InputHead.
+
+%b)
+
+dot([],[],0).
+dot([Head1|Tail1],[Head2|Tail2],Result) :-
+    					dot(Tail1,Tail2,Result1),
+    					Result is (Head1 * Head2) + Result1.
+
+%c)
+
+
+max([X],X).
+max([Head|Tail],Max) :- max(Tail,TailMax),
+                        Head > TailMax,
+                        Max = Head.
+
+max([Head|Tail],Max) :- max(Tail,TailMax),
+                        Head =< TailMax,
+                        Max = TailMax.
+
+%sau
+%max([X], X).
+%max([Head|Tail], Max) :- max(Tail, Max1),
+%		      (Max1 =< Head ->  Max = Head; Max = Max1).
+
+%sau
+
+%max([X],X).
+%max([Head|Tail],Head) :- max(Tail,TailMax),
+%                        Head > TailMax.
+%                       
+%max([Head|Tail],TailMax) :- max(Tail,TailMax),
+%                        Head =< TailMax.
+                     

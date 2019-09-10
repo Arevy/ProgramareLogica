@@ -1,0 +1,23 @@
+%concat(A,B,C) -> in C am AB (concatenate)
+
+concat([],X,X).
+concat([Head|Tail],X,[Head|Y]) :- concat(Tail,X,Y).
+
+palindrome([]).
+palindrome([_]).
+palindrome(X) :-
+    concat([Head|Tail], [Head], X),
+    palindrome(Tail).
+
+%sau
+%palindrome([]).
+%palindrome([_]).
+%palindrome(X) :-
+%    append([Head|Tail], [Head], X),
+%    palindrome(Tail).
+
+
+%reverse([],Z,Z).
+%reverse([H|T],Z,Acc) :- reverse(T,Z,[H|Acc]).
+%reverse(X,Result) :- reverse(X,Result,[]).
+%palindrome(X) :- reverse(X,X).

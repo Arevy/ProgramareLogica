@@ -1,0 +1,45 @@
+% exercitiul 2
+
+byCar(auckland,hamilton).
+byCar(hamilton,raglan).
+byCar(valmont,saarbruecken).
+byCar(valmont,metz).
+ 
+byTrain(metz,frankfurt).
+byTrain(saarbruecken,frankfurt).
+byTrain(metz,paris).
+byTrain(saarbruecken,paris).
+ 
+byPlane(frankfurt,bangkok).
+byPlane(frankfurt,singapore).
+byPlane(paris,losAngeles).
+byPlane(bangkok,auckland).
+byPlane(losAngeles,auckland).
+
+oneStep(X,Y) :- byCar(X,Y).
+oneStep(X,Y) :- byTrain(X,Y).
+oneStep(X,Y) :- byPlane(X,Y).
+
+%a)
+
+travel(X,Y) :- oneStep(X,Y).
+travel(X,Y) :- oneStep(Y,X).
+travel(X,Y) :- oneStep(X,Z), travel(Z,Y).
+
+%b)
+
+travel(X,Y,go(X,Y)) :- oneStep(X,Y).
+travel(X,Y,go(X,Z,Path)) :- oneStep(X,Z), travel(Z,Y,Path).
+
+%c)
+
+oneStep(X,Y,car) :- byCar(X,Y).
+oneStep(X,Y,train) :- byTrain(X,Y).
+oneStep(X,Y,plane) :- byPlane(X,Y).
+
+oneStep(X,Y,car) :- byCar(Y,X).
+oneStep(X,Y,train) :- byTrain(Y,X).
+oneStep(X,Y,plane) :- byPlane(Y,X).
+
+travelx(X,Y,go(X,Y,By)) :- oneStep(X,Y, By).
+travelx(X,Y,go(X,Z, By, Path)) :- oneStep(X,Z, By), travelx(Z,Y,Path).

@@ -1,0 +1,67 @@
+male(rickard).
+male(eddard).
+male(brandon).
+male(benjen).
+male(robb).
+male(bran).
+male(rickon).
+male(jon_snow).
+male(aerys).
+male(rhaegar).
+male(viserys).
+male(aegon).
+
+female(lyarra).
+female(catelyn).
+female(lyanna).
+female(sansa).
+female(arya).
+female(rhaella).
+female(elia).
+female(daenerys).
+female(rhaenys).
+
+parent_of(rickard,eddar).
+parent_of(lyarra,eddar).
+parent_of(rickard,brandon).
+parent_of(lyarra,brandon).
+parent_of(rickard,benjen).
+parent_of(lyarra,benjen).
+parent_of(rickard,lyanna).
+parent_of(lyarra,lyanna).
+
+parent_of(eddar,robb).
+parent_of(catelyn,robb).
+parent_of(eddar,sansa).
+parent_of(catelyn,sana).
+parent_of(eddar,arya).
+parent_of(catelyn,arya).
+parent_of(eddar,bran).
+parent_of(catelyn,bran).
+parent_of(eddar,rickon).
+parent_of(catelyn,rickon).
+
+parent_of(rhaegar,jon_snow).
+parent_of(lyanna,jon_snow).
+
+parent_of(aerys,rhaegar).
+parent_of(rhaella,rhaegar).
+parent_of(aerys,viserys).
+parent_of(rhaella,viserys).
+parent_of(aerys,daenerys).
+parent_of(rhaella,daenerys).
+
+parent_of(rhaegar,rhaenys).
+parent_of(elia,rhaenys).
+parent_of(rhaegar,aegon).
+parent_of(elia,aegon).
+
+father_of(X,Y) :- parent_of(X,Y),male(X).
+mother_of(X,Y) :- parent_of(X,Y),female(X).
+grandfather_of(X,Y) :- father_of(X,Z), parent_of(Z,Y).
+grandmother_of(X,Y) :- mother_of(X,Z), parent_of(Z,Y).
+sister_of(X,Y) :- female(X), parent_of(Z,X), parent_of(Z,Y),X\=Y.
+brother_of(X,Y) :- male(X), parent_of(Z,X), parent_of(Z,Y),X\=Y.
+aunt_of(X,Y) :- female(X), parent_of(Z,Y), sister_of(X,Z).
+uncle_of(X,Y) :- male(X), parent_of(Z,Y), brother_of(X,Z).
+

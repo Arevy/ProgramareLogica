@@ -1,0 +1,178 @@
+fmod LIST-INT2 is
+  protecting INT .
+
+  sorts NList List .
+  subsort Int < NList < List .
+
+  op nil : -> List .
+  op _ _ : Int List -> NList [id: nil] .
+endfm
+
+fmod EX1 is
+  protecting LIST-INT2 .
+
+  op _in_ : Int NList -> Bool .
+  op append : List List -> List .
+  op rev : List -> List .
+  op sort : List -> List .
+  op odd : List -> List .
+  op even : List -> List .
+  op merge : List List -> List .
+  
+  vars A, B : Int .
+  vars L1, L2 : List .
+  
+  eq A in (B L1) = if B == A then true else A in L1 fi .
+  eq A in nil = false .
+  
+  eq append((A L1), L2) = (A append(L1, L2)) .
+  eq append(nil, L2) = L2 .
+  
+  eq rev(A L1) = append(rev(L1), A) .
+  eq rev(nil) = nil . 
+  
+  eq sort(nil) = nil .
+  eq sort(A) = A .
+  eq sort(L1) = merge(sort(odd(L1)), sort(even(L1))) .
+  
+  eq merge(L1, nil) = L1 .
+  eq merge(nil, L1) = L1 .
+  eq merge((A L1), (B L2)) = if A > B then B merge((A L1), L2) else A merge(L1, (B L2)) fi .
+  
+  eq odd(nil) = nil .
+  eq odd(A) = A .
+  eq odd(A B L1) = A odd(L1) .
+  
+  eq even(nil) = nil .
+  eq even(A) = nil .
+  eq even(A B L1) = B even(L1) .
+  
+endfm
+
+red even(3 4 5 6) .
+red sort(append(1 2 3 4 9 8 7 12, 43 6 2 7 4 8 34)) .
+
+
+fmod LIST-INT3 is
+  protecting INT .
+
+  sort List .
+  subsort Int < List .
+
+  op nil : -> List .
+  op _ _ : List List -> List [assoc id: nil] .
+endfm
+
+fmod EX2 is
+  protecting LIST-INT3 .
+
+  op _in_ : Int List -> Bool .
+  op append : List List -> List .
+  op rev : List -> List .
+  op sort : List -> List .
+  op odd : List -> List .
+  op even : List -> List .
+  op merge : List List -> List .
+  
+  vars A, B : Int .
+  vars L1, L2 : List .
+  
+  eq A in (B L1) = if B == A then true else A in L1 fi .
+  eq A in nil = false .
+  
+  eq append(L1, L2) = L1 L2 .
+  eq append(nil, L2) = L2 .
+  
+  eq rev(A) = A .
+  eq rev(nil) = nil . 
+  eq rev((A L1) B) = B rev(L1) A .
+  
+  
+  eq sort(nil) = nil .
+  eq sort(A) = A .
+  eq sort(L1) = merge(sort(odd(L1)), sort(even(L1))) .
+  
+  eq merge(L1, nil) = L1 .
+  eq merge(nil, L1) = L1 .
+  eq merge((A L1), (B L2)) = if A > B then B merge((A L1), L2) else A merge(L1, (B L2)) fi .
+  
+  eq odd(nil) = nil .
+  eq odd(A) = A .
+  eq odd(A B L1) = A odd(L1) .
+  
+  eq even(nil) = nil .
+  eq even(A) = nil .
+  eq even(A B L1) = B even(L1) .
+  
+endfm
+
+red sort(append(1 2 3 4, 1 2 3 4 5 6 7)) .
+red rev(nil) .
+
+
+fmod LIST-INT2 is
+  protecting INT .
+
+  sorts NList List .
+  subsort Int < NList < List .
+
+  op nil : -> List .
+  op _ _ : Int List -> NList [id: nil] .
+endfm
+
+fmod EX3 is
+  protecting LIST-INT2 .
+  
+  op _<<<_ : List List -> Bool .
+  op lenEqualCompare : List List -> Bool .
+  op len : List -> Int .
+  
+  vars A, B : Int .
+  vars L1, L2 : List .
+  
+  eq len(nil) = 0 .
+  eq len(A L1)  = 1 + (len(L1)) .
+  
+  eq lenEqualCompare(nil, nil) = false .
+  eq lenEqualCompare(A L1, B L2) = if A < B
+                     then true
+                     else if A == B
+                         then lenEqualCompare(L1, L2)
+                       else false 
+                       fi 
+                     fi .
+  
+  eq L1 <<< L2 = if len(L1) < len(L2) 
+                 then true 
+                 else if len(L1) == len(L2) 
+                     then lenEqualCompare(L1, L2)
+                     else false
+                     fi 
+                 fi . 
+endfm
+
+red (1 1 2 2 3) <<< (1 1 2 2 2 2) .
+
+
+fmod LIST-INT2 is
+  protecting INT .
+  sorts NList List .
+  subsort Int < NList < List .
+  op nil : -> List .
+  op _ _ : Int List -> NList [id: nil] .
+endfm
+
+fmod EX4 is
+  protecting LIST-INT2 . 
+  op replace : Int Int List -> List .
+  op add : Int List -> List .
+  vars A, B, C : Int .
+  vars L1, L2 : List .
+  eq replace(A, B, nil) = nil .
+  eq replace(A, B, C L1) = if C == A then B replace(A, B, L1) else C replace(A, B, L1) fi .
+  eq add(A, nil) = nil.
+  eq add(A, (B L1)) = B A add(A, L1).
+endfm
+
+red replace(1, 4, (1 1 2 2 3)) .
+red add(2, (1 1)) .

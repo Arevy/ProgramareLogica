@@ -1,0 +1,54 @@
+fmod LIST-INT2 is
+  protecting INT .
+  sorts NList List .
+  subsort Int < NList < List .
+  op nil : -> List .
+  op _ _ : Int List -> NList [id: nil] .
+endfm
+
+fmod LENGTH is
+  protecting LIST-INT2 .
+  op length : List -> Nat .
+  var I : Int .
+  var L : List .
+  eq length(nil) = 0 .
+  eq length(I L) = 1 + length(L) .
+endfm
+
+fmod OPERATII is
+  protecting LIST-INT2 .
+  protecting LENGTH .
+  op _in_ : Int NList -> Bool .
+  op append : List List -> List .
+  op rev : List -> List .
+  op sort : List -> List .
+  op insert : Int List -> List .
+  op _<<<_ : List List -> Bool .
+  vars X I : Int .
+  vars L P : List .
+  eq X in nil = false .
+  eq X in X L = true .
+  ceq X in I L = X in L if X =/= I .
+  eq append(nil, L) = L .
+  eq append(I L, P) = I append(L, P) .
+  eq rev(I L) = append(rev(L) ,I)  .
+  eq rev(nil) = nil .
+  ***eq sort(nil) = nil .
+  ***eq sort(I) = I .
+  ***ceq sort(I X L) = I sort(X L) if I <= X .
+  ***ceq sort(I X L) = X sort(I L) if I > X .
+  eq insert(I, X L) = if I <= X then I X L
+  					   else X insert(I,L) fi .
+  eq insert(I, nil) = I .
+  eq sort(nil) = nil .
+  eq sort(I L) = insert(I, sort(L)) .
+  ceq L <<< P = true if length(L) < length(P) .
+  ceq L <<< P = false if length(L) > length(P) .
+  ceq I L <<< X P = if length(L) == length(P) then
+  					if I < X then true
+  					else if I > X then false
+  					else L <<< P 
+  					fi fi fi .
+  eq nil <<< nil = true .
+endfm
+

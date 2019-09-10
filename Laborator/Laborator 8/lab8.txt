@@ -1,0 +1,44 @@
+fmod LIST-INT3 is
+  protecting INT .
+  sort List .
+  subsort Int < List .
+  op nil : -> List .
+  op _ _ : List List -> List [assoc id: nil] .
+endfm
+
+
+fmod TREE is
+  protecting INT .
+  protecting LIST-INT3 .
+  sort Tree .
+  op empty : -> Tree .
+  op _ _ _ : Tree Int Tree -> Tree .
+  op search : Int Tree -> Bool .
+  op depth : Tree -> Int .
+  op SRD : Tree -> List .
+  op RSD : Tree -> List .
+  op SDR : Tree -> List .
+  op bt-insert : List Tree -> Tree .
+  op btsort : List -> List .
+  var R X I : Int .
+  var S D : Tree .
+  var L : List .
+  eq search(X, S X D) = true .
+  eq search(X, empty) = false .
+  eq search(X, S R D) = search(X, S) or search(X, D) .
+  eq depth(empty) = 0 .
+  eq depth(S R D) = 1 + max(depth(S), depth(D)) .
+  eq SRD(empty) =  nil .
+  eq SRD(S R D) = SRD(S) R SRD(D) .
+  eq RSD(empty) =  nil .
+  eq RSD(S R D) = R RSD(S) RSD(D) .
+  eq SDR(empty) =  nil .
+  eq SDR(S R D) = SDR(S) SDR(D) R .
+  eq bt-insert(I L, empty) = bt-insert(L, empty I empty) .
+  eq bt-insert(nil, S) = S .
+  ceq bt-insert(I L, S R D) = bt-insert(L, (S R bt-insert(I, D))) if (I > R) .
+  ceq bt-insert(I L, S R D) = bt-insert(L, (bt-insert(I, S) R D)) if (I <= R) .
+  eq btsort(L) = SRD(bt-insert(L, empty)) .
+endfm
+
+red btsort(2 5 3 1 9 6 12) .

@@ -1,0 +1,75 @@
+fmod MYNAT is
+	sorts Zero NzNat Nat .
+	subsort Zero NzNat < Nat .
+	op 0 : -> Zero .
+	op s_ : Nat -> NzNat .
+	op _+_ : Nat Nat -> Nat [assoc comm prec 33] .
+  	op _-_ : Nat Nat -> Nat [assoc prec 33] .
+	op _*_ : Nat Nat -> Nat [assoc comm prec 31] .
+	op max : Nat Nat -> Nat .
+  	op min : Nat Nat -> Nat .
+    	op _<_ : Nat Nat -> Bool .
+    	op _>_ : Nat Nat -> Bool .
+    	op _<=_ : Nat Nat -> Bool .
+	op _>=_ : Nat Nat -> Bool .
+  	op par_ : Nat -> Bool .
+  	op impar_ : Nat -> Bool .
+  	op cmmdc : Nat Nat -> Nat .
+  	vars N M : Nat .
+	eq 0 + M = M .
+	eq s(N) + M = s(N + M) .
+  	eq N - 0 = N .
+  	eq s(M) - s(N) = M - N .	 
+	eq 0 * M = 0 .
+	eq s(N) * M = (N * M) + M .
+  	eq 0 < s N = true .
+    	eq N < 0 = false .
+  	eq s N < s M = N < M .
+  	eq N <= M = N < M or N == M .
+	eq N > M = not(N <= M) .
+  	eq N >= M = N > M or N == M .
+  	eq par(0) = true .
+  	eq par(s 0) = false .
+  	eq par(s s M) = par(M) .
+  	eq impar(M) = not(par(M)) .
+  	eq cmmdc(N,N) = N .
+  	ceq cmmdc(N,M) = cmmdc(N,M - N) if (M > N) .
+  	ceq cmmdc(N,M) = cmmdc(N - M,M) if (N > M) .
+  	ceq max(M,N) = M if (N < M) or (M == N) .
+    	ceq max(M,N) = N if (N > M) .
+	ceq min(N,M) = M if (M < N) or (M == N) .
+  	ceq min(N,M) = N if (N < M) .
+endfm
+
+fmod COMPLEX is
+  	including INT .
+	sort Complex .
+	subsort Int < Complex .
+    	op _+_i : Int Nat -> Complex .
+  	op _+_ : Complex Complex -> Complex [ditto] .
+  	op _*_ : Complex Complex -> Complex [ditto] .
+  	vars N X : Int .
+  	vars M Y : Nat .
+  	eq (N + M i) + (X + Y i) = (N + X) + (M + Y) i .
+	eq (N + M i) * (X + Y i) = (N * X - M * Y) + (N * Y + M * X) i .
+endfm
+
+
+fmod DATA-CALENDARISTICA is
+	including NAT .
+  	sort Dc .
+  	op _/_/_ : Nat Nat Nat -> Dc .
+  	op valid_ : Dc -> Bool .
+  	op add : Nat Dc -> Dc .
+  	vars A B C D : Nat .
+  	eq add(0, A / B / C) = A / B / C .
+  	eq add(s D, A / B / C) = if valid(A + 1 / B / C) then add(D, A + 1 / B / C)
+  							 else if valid(1 / B + 1 / C) then add(D, 1 / B + 1 / C)
+  							 else add(D, 1 / 1 / C + 1) fi fi .
+  	ceq valid(A / B / C) = true if (A <= 31 and B == 1) .
+  	ceq valid(A / B / C) = false if (A > 31 and B == 1) .
+  	ceq valid(A / B / C) = true if (A <= 28 and B == 2) .
+  	ceq valid(A / B / C) = false if (A > 28 and B == 2) .
+  	ceq valid(A / B / C) = true if (A <= 31 and B == 3) .
+  	ceq valid(A / B / C) = false if (A > 31 and B == 3) .
+endfm
